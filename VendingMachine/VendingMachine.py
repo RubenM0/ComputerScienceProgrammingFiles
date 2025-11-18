@@ -1,8 +1,4 @@
 #Programming vending machine assignment by Ruben Mazziotta (s5706207) 
-#Import libraries for the csv receipt
-import csv
-import os
-
 
 #Array for coin types
 coin_types = [2, 1, 0.5, 0.2]
