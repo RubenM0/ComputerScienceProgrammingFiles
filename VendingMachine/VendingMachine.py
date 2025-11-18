@@ -1,4 +1,8 @@
 #Programming vending machine assignment by Ruben Mazziotta (s5706207) 
+#Import libraries for the csv receipt
+import csv
+import os
+
 
 #Array for coin types
 coin_types = [2, 1, 0.5, 0.2]
@@ -85,13 +89,13 @@ def give_change(remaining_balance):
     change = {}
     #Sort coins from largest first and conver to pence
     pence_coins = sorted(coin_map.values(), reverse=True)
-    for pence_coins in pence_coins:
+    for pence_coin in pence_coins:
         count = remaining_balance // pence_coins
         if count > 0:
             #Map back for user display
-            pound_coin = pence_coins / 100
+            pound_coin = pence_coin / 100
             change[pound_coin] = count
-            remaining_balance -= count * pence_coins
+            remaining_balance -= count * pence_coin
     return change
 
 
@@ -118,6 +122,20 @@ def generate_reciept(total_items_purchased, discounts_applied, total_spent, rema
     print(f"Discounts applied: {discounts_applied}")
     print(f"Remaining balance: {format_money(remaining_balance)}")
     print("----------------------------")
+
+    #Create the CSV file
+    csv_filename = f"csv receipt {order_number}"
+
+    #Write to the file
+    with open(csv_filename, 'w') as file:
+        file.write("--- Receipt ---\n")
+        file.write(f"Order number: {order_number}\n")
+        file.write(f"Total items bought: {total_items_purchased}\n")
+        file.write(f"Items bought: {', '.join(purchased_items)}\n")
+        file.write(f"Total spent: {format_money(total_spent)}\n")
+        file.write(f"Discounts applied: {discounts_applied}\n")
+        file.write(f"Remaining balance: {format_money(remaining_balance)}\n")
+        file.write("----------------------------\n")
 
     #Reset values for next reciept
     reset_values()
